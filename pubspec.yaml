@@ -31,7 +31,9 @@ dependencies:
   flutter_staggered_animations: "^0.1.2"
   sliding_sheet: ^0.2.4
   flutter_icons: ^1.0.0+1
-  intl: ^0.16.1
+  intl: ^0.16.1  
+  http: ^0.12.2
+
 
 
   # The following adds the Cupertino Icons font to your application.
