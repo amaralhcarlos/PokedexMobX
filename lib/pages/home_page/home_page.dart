@@ -68,8 +68,8 @@ class HomePage extends StatelessWidget {
                                               child: PokeItem(
                                                 index: index,
                                                 nome: pokemon.name,
-                                                image: pokeApiStore.getImage(
-                                                    numero: pokemon.num),
+                                                num: pokemon.num,
+                                                types: pokemon.type,
                                               ),
                                               onTap: () {
                                                 Navigator.push(
