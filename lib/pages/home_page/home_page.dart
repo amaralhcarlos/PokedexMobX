@@ -5,13 +5,17 @@ import 'package:pokedex_mobx/consts/consts_app.dart';
 import 'package:pokedex_mobx/models/pokeapi.dart';
 import 'package:pokedex_mobx/pages/home_page/widgets/app_bar_home.dart';
 import 'package:pokedex_mobx/pages/home_page/widgets/poke_item.dart';
+import 'package:pokedex_mobx/pages/poke_detail/poke_detail_page.dart';
 import 'package:pokedex_mobx/stores/pokeapi_store.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    PokeApiStore pokeApiStore = PokeApiStore();
-    pokeApiStore.fetchPokemonList();
+    final _pokemonStore = Provider.of<PokeApiStore>(context);
+    if (_pokemonStore.pokeApi == null) {
+      _pokemonStore.fetchPokemonList();
+    }
     double screenWidth = MediaQuery.of(context).size.width;
     double statusBarWidth = MediaQuery.of(context).padding.top;
     return Scaffold(
@@ -43,7 +47,7 @@ class HomePage extends StatelessWidget {
                     child: Observer(
                         name: 'HomePageList',
                         builder: (BuildContext context) {
-                          PokeApi _pokeApi = pokeApiStore.pokeApi;
+                          PokeApi _pokeApi = _pokemonStore.pokeApi;
                           return (_pokeApi != null)
                               ? AnimationLimiter(
                                   child: GridView.builder(
@@ -56,7 +60,7 @@ class HomePage extends StatelessWidget {
                                       itemCount: _pokeApi.pokemon.length,
                                       itemBuilder: (context, index) {
                                         Pokemon pokemon =
-                                            pokeApiStore.getPokemon(index);
+                                            _pokemonStore.getPokemon(index);
                                         return AnimationConfiguration
                                             .staggeredGrid(
                                           position: index,
@@ -77,7 +81,11 @@ class HomePage extends StatelessWidget {
                                                     MaterialPageRoute(
                                                       builder: (BuildContext
                                                               context) =>
-                                                          Container(),
+                                                          PokeDetailPage(
+                                                              index: int.parse(
+                                                                  pokemon.num),
+                                                              name:
+                                                                  pokemon.name),
                                                       fullscreenDialog: true,
                                                     ));
                                               },
